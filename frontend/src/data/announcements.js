@@ -1,0 +1,58 @@
+const announcements = [
+  {
+    id: 1,
+    force: "Pakistan Army",
+    title: "PMA Long Course registration is now open for eligible intermediate candidates.",
+    type: "Registration",
+    category: "Commission",
+    deadline: "Apply before the announced closing date",
+    summary: "Officer entry through the Pakistan Military Academy for students who meet the latest academic and age criteria.",
+  },
+  {
+    id: 2,
+    force: "Pakistan Army",
+    title: "Soldier and Sipahi recruitment opportunities are available across major recruitment centres.",
+    type: "Job",
+    category: "Non-Commission",
+    deadline: "Check the nearest AS&RC for the latest schedule",
+    summary: "Non-commissioned service roles for candidates with Matric-level qualifications and the required physical standards.",
+  },
+  {
+    id: 3,
+    force: "Pakistan Navy",
+    title: "PN Cadet entry and SSC opportunities are open for qualified applicants.",
+    type: "Admission",
+    category: "Commission",
+    deadline: "Registration remains active until the advertised deadline",
+    summary: "Officer admission routes for cadets, graduates and specialists across technical and non-technical branches.",
+  },
+  {
+    id: 4,
+    force: "Pakistan Navy",
+    title: "Sailor trades and technical vacancies are being advertised for Matric and Intermediate pass-outs.",
+    type: "Job",
+    category: "Non-Commission",
+    deadline: "Visit the official recruitment portal for the latest intake details",
+    summary: "Entry-level sailor roles with practical trades for students looking for non-commissioned service careers.",
+  },
+  {
+    id: 5,
+    force: "Pakistan Air Force",
+    title: "GD Pilot and Aeronautical Engineering admission notices are open for aspiring officers.",
+    type: "Admission",
+    category: "Commission",
+    deadline: "Submit applications before the course closing date",
+    summary: "Commissioned officer routes for candidates interested in flying, engineering and other specialist branches.",
+  },
+  {
+    id: 6,
+    force: "Pakistan Air Force",
+    title: "Airman recruitment and technical trades are currently being advertised for eligible applicants.",
+    type: "Job",
+    category: "Non-Commission",
+    deadline: "Check PAF recruitment updates for the latest call letters",
+    summary: "Non-commissioned airman roles spanning technical, support and administrative functions.",
+  },
+];
+
+export default announcements;
