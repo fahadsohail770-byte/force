@@ -9,6 +9,8 @@ import ISSB from "./pages/ISSB";
 import InitialTest from "./pages/InitialTest";
 import PastPapers from "./pages/PastPapers";
 import Announcements from "./pages/Announcements";
+import AdminPanel from "./components/AdminPanel";
+
 
 function NotFound() {
   return (
@@ -33,6 +35,7 @@ export default function App() {
           <Route path="/initial-test" element={<InitialTest />} />
           <Route path="/past-papers" element={<PastPapers />} />
           <Route path="/announcements" element={<Announcements />} />
+          <Route path="/Adminpanel" element={<AdminPanel />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+// Change this if your backend runs on a different port/host
+const API_BASE_URL = "http://localhost:5000";
+
 const inputClass =
   "w-full border border-ink/20 bg-white px-3 py-2.5 text-sm text-ink placeholder:text-ink/40 focus:border-gold focus:outline-none";
 const labelClass =
@@ -17,15 +20,53 @@ export default function ApplicationForm({ course, onClose }) {
     phone: "",
     domicile: "",
   });
+  const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError("");
+
+    if (!agreed) {
+      setError("Please agree to the terms & conditions before submitting.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          course: {
+            force: course.force,
+            type: course.type,
+            title: course.title,
+          },
+          ...form,
+          agreedToTerms: agreed,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message || "Could not submit application. Please check your connection.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,8 +94,7 @@ export default function ApplicationForm({ course, onClose }) {
               type="button"
               onClick={onClose}
               aria-label="Close form"
-              className="shrink-0 border border-parchment/30 px-3 py-1 font-mono text-xs uppercase tracking-widest text-parchment hover:bg-parchment hover:text-forest transition-colors"
-            >
+              className="shrink-0 border border-parchment/30 px-3 py-1 font-mono text-xs uppercase tracking-widest text-parchment hover:bg-parchment hover:text-forest transition-colors">
               Close ✕
             </button>
           </div>
@@ -85,6 +125,12 @@ export default function ApplicationForm({ course, onClose }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="px-6 py-6 sm:px-8">
+            {error && (
+              <div className="mb-5 border border-red-400/60 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label className={labelClass} htmlFor="name">Candidate Name *</label>
@@ -208,6 +254,8 @@ export default function ApplicationForm({ course, onClose }) {
                 <input
                   type="checkbox"
                   required
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
                   className="mt-0.5 h-4 w-4 border border-ink/30 accent-forest"
                 />
                 <span>
@@ -221,15 +269,17 @@ export default function ApplicationForm({ course, onClose }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="border border-ink/25 px-8 py-3 font-mono text-xs uppercase tracking-[0.25em] text-ink/70 hover:border-ink hover:text-ink transition-colors"
+                disabled={loading}
+                className="border border-ink/25 px-8 py-3 font-mono text-xs uppercase tracking-[0.25em] text-ink/70 hover:border-ink hover:text-ink transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="border border-forest bg-forest px-8 py-3 font-mono text-xs uppercase tracking-[0.25em] text-parchment hover:bg-forest-light transition-colors"
+                disabled={loading}
+                className="border border-forest bg-forest px-8 py-3 font-mono text-xs uppercase tracking-[0.25em] text-parchment hover:bg-forest-light transition-colors disabled:opacity-60"
               >
-                Submit Application
+                {loading ? "Submitting..." : "Submit Application"}
               </button>
             </div>
           </form>
